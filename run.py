@@ -16,15 +16,15 @@ class dl_model():
     IMAGE_HEIGHT = 340 #1024
     N_CHANNELS = 3
     
-    GENERATOR_BATCH_SIZE = 8
+    GENERATOR_BATCH_SIZE = 100
     NB_EPOCH_PER_BATCH = 2
-    NB_EPOCH = 10
+    NB_EPOCH = 5
     
     def __init__(self, argv):
         self.argv = argv
         self.BASE_PATH = argv[0]
         self.dims_image = {'width': self.IMAGE_WIDTH, 'height': self.IMAGE_HEIGHT, 'channel': self.N_CHANNELS}
-        self.dims_output = 6
+        self.dims_output = 5
     
     def get_image_name_list(self, path, train_or_not):
         if train_or_not:
@@ -43,7 +43,7 @@ class dl_model():
     def image_transformation(self, image_path):
         img = cv2.imread(image_path)
         img = cv2.resize(img, (self.IMAGE_WIDTH, self.IMAGE_HEIGHT))
-        return np.array(img).reshape((self.IMAGE_WIDTH, self.IMAGE_HEIGHT, self.N_CHANNELS))
+        return np.array(img).reshape((self.IMAGE_HEIGHT, self.IMAGE_WIDTH, self.N_CHANNELS))
 
     def image_batch_generator(self, array, batch_size, ext):
         path = os.path.join(self.BASE_PATH, ext)

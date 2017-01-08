@@ -57,24 +57,34 @@ class Tensorflow_Model():
         # Fully Connected Network
         fc1 = tf.nn.relu(tf.matmul(flatten, self.__W[4]) + self.__b[4])
         out = tf.nn.relu(tf.matmul(fc1, self.__W[5]) + self.__b[5])
-        print(out.get_shape().as_list())
-    
+#        print(out.get_shape().as_list())
+
         return out
 
+    def one_hot(self, Y):
+        max = np.max(Y)
+        one_hot_encoded = np.zeros([Y.shape[0], max+1])
+        for i, y in enumerate(Y):
+            one_hot_encoded[i, y] = 1
+        return one_hot_encoded
+
+
     def get_x_y(self, data):
-        x = data[:, 0]
-        print(data[:, 1])
-        y = tf.constant(tf.one_hot(tf.transpose(data[:, 1]), data.shape[0]+1, 1., 0., -1))
-        print('y shape'.format(np.array(y).shape))
-        return np.array(x).reshape([-1, self.dims_image['height'], self.dims_image['width'], self.dims_image['channel']]), y
+#        print('Data shape: {}'.format(data.shape))
+#        print('Y values: {}'.format(data[:, 1]))
+        x = np.array([x for x in data[:, 0]]).reshape([-1, self.dims_image['height'], self.dims_image['width'], self.dims_image['channel']])
+        y = self.one_hot(data[:, 1])
+        print('x shape: {}'.format(x.shape))
+        print('y shape: {}'.format(y.shape))
+
+        return x, y
 
 
     def train(self, data):
+        avg_cost = 0
         with tf.device('/cpu:0'):
-            init = tf.initialize_all_variables()
             x = tf.placeholder(tf.float32, [None, self.dims_image['height'], self.dims_image['width'], self.dims_image['channel']])
             y = tf.placeholder(tf.float32, [None, self.dims_output])
-            self.sess.run(init)
             _y = self.model(x)
             cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(_y, y))
             optimizer = tf.train.AdamOptimizer(learning_rate=0.001).minimize(cost)
@@ -82,7 +92,8 @@ class Tensorflow_Model():
             accr = tf.reduce_mean(tf.cast(corr, tf.float32))
             
             batch_x, batch_y = self.get_x_y(data)
-            sess.run(optimizer, feed_dict={x: batch_x, y: batch_y})
-            avg_cost += sess.run(cost, feed_dict={x: batch_x, y: batch_y})/self.dims_output
-            train_acc = sess.run(accr, feed_dict={x: batch_x, y: batch_y})
+            self.sess.run(tf.initialize_all_variables())
+            self.sess.run(optimizer, feed_dict={x: batch_x, y: batch_y})
+            avg_cost += self.sess.run(cost, feed_dict={x: batch_x, y: batch_y})/self.dims_output
+            train_acc = self.sess.run(accr, feed_dict={x: batch_x, y: batch_y})
             print('Average Cost: {}, Training Accuracy: {}'.format(avg_cost, train_acc))
