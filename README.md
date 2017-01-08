@@ -23,4 +23,4 @@ The code for this project is contined within the two files:
 1. **run.py:** This python file is the starting point of the code. It processes the images and uses a **custom generator** to create batches of any desired size and calls the model.py file for training the model
 2. **model.py:** This file contains code for creation of the **Convolutional Neural Network (CNN)** model and training based on the training batch passed by run.py file.
 
-Note: Since my laptop is not very powerful and I have installed tensorflow usinf conda (no GPU support via anaconda), I have used a small subset of the original dataset for training. I am uploading an even smaller subset of the original kaggle dataset. The original dataset can be downloaded [here](https://www.kaggle.com/c/diabetic-retinopathy-detection)
+**Note:** Since my laptop is not very powerful and I have installed tensorflow usinf conda (no GPU support via anaconda), I have used a small subset of the original dataset for training. I am uploading an even smaller subset of the original kaggle dataset. The original dataset can be downloaded [here](https://www.kaggle.com/c/diabetic-retinopathy-detection)
