@@ -1,4 +1,4 @@
-# Diabetic_Retinopathy_Detection
+# Diabetic Retinopathy Detection Challenge (Kaggle)
 
 ### This repository contains tensorflow code for the kaggle challenge: Diabetic Retinopathy Detection.
 
