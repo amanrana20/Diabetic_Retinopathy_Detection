@@ -20,6 +20,6 @@ The datset details are as follows:
 
 The code for this project is contined within the two files:
 
-1. **run.py:** This python file is the starting point of the code. It processes the images and uses a _**custon generator**_ to create batches of any desired size and calls the model.py file for training the model
+1. **run.py:** This python file is the starting point of the code. It processes the images and uses a _**custom generator**_ to create batches of any desired size and calls the model.py file for training the model
 2. **model.py:** This file contains code for creation of the **Convolutional Neural Network (CNN)** model and training based on the training batch passed by run.py file.
 
